@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "332047936652",
+    "project_id": "jiulia-56db4",
+    "storage_bucket": "jiulia-56db4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332047936652:android:a1819a437b9cb534711fa9",
+        "android_client_info": {
+          "package_name": "com.herorickystudios.jiulia_socialmidia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332047936652-6u1deetpur6credl2t2p66ua8smiugvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4mYICTFSL_BRYME2JNb8Wa5PwVHdfeSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332047936652-6u1deetpur6credl2t2p66ua8smiugvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
