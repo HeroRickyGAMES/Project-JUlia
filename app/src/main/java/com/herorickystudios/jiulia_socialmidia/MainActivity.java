@@ -89,9 +89,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser usuariologado = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(usuariologado != null){
+            abrirhome();
+        }
+    }
 
     public void loginacbtn(View view){
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void abrirhome(){
+        Intent intent = new Intent(this, Home_Show.class);
         startActivity(intent);
     }
 
