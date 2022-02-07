@@ -3,6 +3,7 @@ package com.herorickystudios.jiulia_socialmidia;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -48,9 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //AbrirTelaInicial();
-                                Snackbar snackbar = Snackbar.make(view, "Logado com sucesso", Snackbar.LENGTH_LONG);
-                                snackbar.show();
+                                abrirhome();
                             }
                         }, 3000);
                     } else {
@@ -66,5 +65,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void abrirhome(){
+        Intent intent = new Intent(this, Home_Show.class);
+        startActivity(intent);
     }
 }
