@@ -1,16 +1,32 @@
 package com.herorickystudios.jiulia_socialmidia.fragmentos;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,8 +34,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.herorickystudios.jiulia_socialmidia.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -30,6 +53,12 @@ import java.nio.charset.StandardCharsets;
 public class ProfileFragment extends Fragment {
 
     TextView nome, telefone;
+    Button btnselectedPhoto;
+    ImageView mImgPhoto;
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    StorageReference storageRef = storage.getReference();
 
     public DatabaseReference referencia = FirebaseDatabase.getInstance().getReference("usuario");
 
@@ -79,14 +108,14 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
-
         referencia.addValueEventListener(new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 //View By ID
                 nome = view.findViewById(R.id.textNome);
                 telefone = view.findViewById(R.id.textTelefone);
+                btnselectedPhoto = view.findViewById(R.id.btn_selectphoto);
+                mImgPhoto = view.findViewById(R.id.imageView);
 
                 Log.i("FIREBASE", snapshot.getValue().toString());
 
@@ -101,17 +130,66 @@ public class ProfileFragment extends Fragment {
                 nome.setText("Nome: " + name);
                 telefone.setText("Telefone: " + telefonee);
 
-            }
+                btnselectedPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selectPhoto();
+                    }
 
+
+                });
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getContext(), "BA NI DO... ~ Edinaldo Pereira", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
         return view;
+    }
+
+    private void selectPhoto() {
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+
+            Uri data1 = data.getData();
+
+            Bitmap bitmap = null;
+
+            Uri imagempatch = MediaStore.Images.Media.getContentUri(String.valueOf(data1));
+
+            Uri file = Uri.fromFile(new File("images/*"));
+            StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+            UploadTask uploadTask = riversRef.putFile(file);
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //taskSnapshot.getUploadSessionUri(imagempatch);
+                    // ...
+                }
+            });
+
+            System.out.println(imagempatch);
+
+
+
+            //mImgPhoto.setBackground();
+
+        }
 
     }
 }
