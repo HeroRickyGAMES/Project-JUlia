@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.herorickystudios.jiulia_socialmidia.ProfileActivity;
 import com.herorickystudios.jiulia_socialmidia.R;
 
 import java.io.File;
@@ -127,6 +128,14 @@ public class ProfileFragment extends Fragment {
 
                 profileopen.setText("Nome: " + name);
 
+                profileopen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), ProfileActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -136,10 +145,4 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void selectPhoto() {
-
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 0);
-    }
 }

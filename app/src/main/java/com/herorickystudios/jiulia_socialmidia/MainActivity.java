@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText nome, email, phone, pass;
+    EditText nome, email, phone, pass, idade;
     public DatabaseReference referencia = FirebaseDatabase.getInstance().getReference("usuario");
 
     @Override
@@ -35,16 +36,18 @@ public class MainActivity extends AppCompatActivity {
         nome = findViewById(R.id.editName);
         email = findViewById(R.id.editEmail);
         phone = findViewById(R.id.editPhone);
+        idade = findViewById(R.id.editTextDate);
         pass = findViewById(R.id.editSenha);
     }
 
     public void cadastrarUsuario(View v) {
         String emails = email.getText().toString();
         String senha = pass.getText().toString();
+        String idade2 = idade.getText().toString();
         String telefone = phone.getText().toString();
         String name = nome.getText().toString();
 
-        if (emails.isEmpty() || senha.isEmpty() || telefone.isEmpty() || name.isEmpty()) {
+        if (emails.isEmpty() || senha.isEmpty() || telefone.isEmpty() || name.isEmpty() || idade2.isEmpty()) {
             Snackbar snackbar = Snackbar.make(v, "Preencha todos os campos!", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
@@ -61,9 +64,18 @@ public class MainActivity extends AppCompatActivity {
                         //Documentos
                         referencia.child(getUID).child("nome").setValue(name);
                         referencia.child(getUID).child("telefone").setValue(telefone);
+                        referencia.child(getUID).child("data de nascimento").setValue(idade2);
 
                         Snackbar snackbar = Snackbar.make(v, "Cadastro Realizado com sucesso!", Snackbar.LENGTH_LONG);
                         snackbar.show();
+                        int data = 31/12/2009;
+
+
+
+                      /* Colocar verificação de idade depois!
+                       if(Integer.parseInt(idade2) <= data){
+                            Toast.makeText(MainActivity.this, "Opa! Você é novo de mais! Espere ter 14 anos para participar da nossa rede!", Toast.LENGTH_SHORT).show();
+                        } */
 
                     } else {
                         String erro;
