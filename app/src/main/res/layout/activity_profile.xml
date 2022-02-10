@@ -21,10 +21,11 @@
         app:layout_constraintGuide_percent="0.59" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/imageCapa"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/d46f2849dfa5277e8e2d34c6e3352189"
+        android:onClick="selecionarCapa"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -38,9 +39,11 @@
         android:layout_width="140dp"
         android:layout_height="139dp"
         android:background="@drawable/ic_baseline_supervised_user_circle_24"
+        android:onClick="selecionarFoto"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageButton5"
+        app:layout_constraintStart_toStartOf="@+id/imageCapa"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
     <TextView
