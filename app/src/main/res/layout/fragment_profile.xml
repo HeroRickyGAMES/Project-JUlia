@@ -6,44 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".fragmentos.ProfileFragment">
 
+    <Button
+        android:id="@+id/profileopenbtn"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="Exibir perfil pessoal"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Nome: "
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_selectphoto"
-        app:layout_constraintTop_toTopOf="@+id/btn_selectphoto" />
-
-    <TextView
-        android:id="@+id/textTelefone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Telefone"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_selectphoto"
-        app:layout_constraintTop_toBottomOf="@+id/textNome" />
-
-    <Button
-        android:id="@+id/btn_selectphoto"
-        android:layout_width="104dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
-        android:background="@drawable/bg_button_img_rounded"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
-        android:layout_width="106dp"
-        android:layout_height="108dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_selectphoto"
-        app:layout_constraintEnd_toEndOf="@+id/btn_selectphoto"
-        app:layout_constraintStart_toStartOf="@+id/btn_selectphoto"
-        app:layout_constraintTop_toTopOf="@+id/btn_selectphoto"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/profileopenbtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

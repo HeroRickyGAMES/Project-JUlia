@@ -52,9 +52,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class ProfileFragment extends Fragment {
 
-    TextView nome, telefone;
-    Button btnselectedPhoto;
-    ImageView mImgPhoto;
+    TextView nome;
+    Button profileopen;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -113,9 +112,7 @@ public class ProfileFragment extends Fragment {
 
                 //View By ID
                 nome = view.findViewById(R.id.textNome);
-                telefone = view.findViewById(R.id.textTelefone);
-                btnselectedPhoto = view.findViewById(R.id.btn_selectphoto);
-                mImgPhoto = view.findViewById(R.id.imageView);
+                profileopen = view.findViewById(R.id.profileopenbtn);
 
                 Log.i("FIREBASE", snapshot.getValue().toString());
 
@@ -125,19 +122,11 @@ public class ProfileFragment extends Fragment {
                 String user = usuarioLogado.getUid();
 
                 String name = snapshot.child(user).child("nome").getValue().toString();
-                String telefonee = snapshot.child(user).child("telefone").getValue().toString();
 
-                nome.setText("Nome: " + name);
-                telefone.setText("Telefone: " + telefonee);
+                nome.setText("Toque e abra seu perfil");
 
-                btnselectedPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        selectPhoto();
-                    }
+                profileopen.setText("Nome: " + name);
 
-
-                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -152,44 +141,5 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 0);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 0) {
-
-            Uri data1 = data.getData();
-
-            Bitmap bitmap = null;
-
-            Uri imagempatch = MediaStore.Images.Media.getContentUri(String.valueOf(data1));
-
-            Uri file = Uri.fromFile(new File("images/*"));
-            StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-            UploadTask uploadTask = riversRef.putFile(file);
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //taskSnapshot.getUploadSessionUri(imagempatch);
-                    // ...
-                }
-            });
-
-            System.out.println(imagempatch);
-
-
-
-            //mImgPhoto.setBackground();
-
-        }
-
     }
 }
