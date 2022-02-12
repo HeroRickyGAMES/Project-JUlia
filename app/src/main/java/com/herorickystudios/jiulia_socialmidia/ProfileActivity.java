@@ -116,6 +116,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         System.out.println(requestCode);
 
+        if(data == null){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
+
         if(requestCode == 3){
             Toast.makeText(this, "Capa inicializada", Toast.LENGTH_SHORT).show();
             Uri uri1 = data.getData();
