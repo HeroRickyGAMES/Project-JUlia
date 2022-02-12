@@ -1,17 +1,14 @@
 package com.herorickystudios.jiulia_socialmidia;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.herorickystudios.jiulia_socialmidia.fragmentos.ExploreFragment;
 import com.herorickystudios.jiulia_socialmidia.fragmentos.HomeScroll;
 import com.herorickystudios.jiulia_socialmidia.fragmentos.ProfileFragment;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
@@ -27,7 +24,7 @@ public class Home_Show extends AppCompatActivity {
 
 
         smartTabLayout = findViewById(R.id.viewPagerTab);
-        viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager2);
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)

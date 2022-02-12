@@ -3,11 +3,11 @@ package com.herorickystudios.jiulia_socialmidia;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,15 +30,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView textNomepf, textTelefonepf, nascimentopf, textNumeroSeguidores, textNumroAmigos;
+    TextView textNomepf, textNumeroSeguidores, textNumroAmigos;
 
     ImageButton imageButton6, imageCapa;
 
@@ -54,6 +54,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public DatabaseReference referencia = FirebaseDatabase.getInstance().getReference("usuario");
 
+    SmartTabLayout smartTabLayout2;
+    ViewPager viewPager2;
+
 
 
     @Override
@@ -64,14 +67,29 @@ public class ProfileActivity extends AppCompatActivity {
         referencia.addValueEventListener(new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-
                 textNomepf = findViewById(R.id.textNomepf);
-                textTelefonepf = findViewById(R.id.textTelefonepf);
-                nascimentopf = findViewById(R.id.nascimentopf);
                 imageButton6 = findViewById(R.id.imageButton6);
                 imageCapa = findViewById(R.id.imageCapa);
                 textNumeroSeguidores = findViewById(R.id.textNumeroSeguidores);
                 textNumroAmigos = findViewById(R.id.textNumroAmigos);
+
+                smartTabLayout2 = findViewById(R.id.viewPagerTab);
+                viewPager2 = findViewById(R.id.viewpager2);
+
+
+
+                FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+                        getSupportFragmentManager(), FragmentPagerItems.with(getBaseContext())
+                        .add("Posts", postFragment.class)
+                        .add("Amigos", AmigosFragment.class)
+                        .add("Seguidores", SegudoresFragment.class)
+                        .add("Sobre", Fragment_Sobre.class)
+                        .create()
+                );
+
+                viewPager2.setAdapter( adapter );
+                smartTabLayout2.setViewPager( viewPager2 );
+
 
                 Log.i("FIREBASE", snapshot.getValue().toString());
 
@@ -88,8 +106,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                 textNomepf.setText("Nome: " + name);
-                textTelefonepf.setText("Telefone: " + telefone);
-                nascimentopf.setText("Data de Nascimento: " + data);
                 textNumroAmigos.setText(amigo);
                 textNumeroSeguidores.setText(seguidor);
 
