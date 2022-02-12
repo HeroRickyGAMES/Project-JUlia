@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,16 +26,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView textNomepf, textTelefonepf, nascimentopf;
+    TextView textNomepf, textTelefonepf, nascimentopf, textNumeroSeguidores, textNumroAmigos;
 
     ImageButton imageButton6, imageCapa;
 
@@ -64,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
                 nascimentopf = findViewById(R.id.nascimentopf);
                 imageButton6 = findViewById(R.id.imageButton6);
                 imageCapa = findViewById(R.id.imageCapa);
+                textNumeroSeguidores = findViewById(R.id.textNumeroSeguidores);
+                textNumroAmigos = findViewById(R.id.textNumroAmigos);
 
                 Log.i("FIREBASE", snapshot.getValue().toString());
 
@@ -75,18 +83,21 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = snapshot.child(user).child("nome").getValue().toString();
                 String telefone = snapshot.child(user).child("telefone").getValue().toString();
                 String data = snapshot.child(user).child("data de nascimento").getValue().toString();
+                String amigo = snapshot.child(user).child("amigos").getValue().toString();
+                String seguidor = snapshot.child(user).child("seguidores").getValue().toString();
 
 
                 textNomepf.setText("Nome: " + name);
                 textTelefonepf.setText("Telefone: " + telefone);
                 nascimentopf.setText("Data de Nascimento: " + data);
+                textNumroAmigos.setText(amigo);
+                textNumeroSeguidores.setText(seguidor);
 
 
 
                 StorageMetadata metadata = new StorageMetadata.Builder()
                         .setContentType("image/jpg")
                         .build();
-
 
             }
             @Override
@@ -163,14 +174,6 @@ public class ProfileActivity extends AppCompatActivity {
             UploadTask uploadTask = storageRef.child(user).child("images/profile.jpg").putFile(uri, metadata);
 
         }
-
-
-        String date = data.toString();
-
-
-
-
-
     }
 
     private void enviarImagem() {
@@ -194,5 +197,45 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // If there's a download in progress, save the reference so you can query it later
+        if (storageRef != null) {
+            outState.putString("reference", storageRef.toString());
+        }
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+        // If there was a download in progress, get its reference and create a new StorageReference
+        final String stringRef = savedInstanceState.getString("reference");
+        if (stringRef == null) {
+            return;
+        }
+        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(stringRef);
+
+        // Find all DownloadTasks under this StorageReference (in this example, there should be one)
+        List<FileDownloadTask> tasks = storageRef.getActiveDownloadTasks();
+        if (tasks.size() > 0) {
+            // Get the task monitoring the download
+            FileDownloadTask task = tasks.get(0);
+
+            // Add new listeners to the task using an Activity scope
+            task.addOnSuccessListener(this, new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot state) {
+                    // Success!
+                    // ...
+                }
+            });
+        }
     }
 }
