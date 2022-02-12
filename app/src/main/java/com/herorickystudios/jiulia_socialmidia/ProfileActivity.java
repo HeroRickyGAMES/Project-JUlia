@@ -83,6 +83,11 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
+                StorageMetadata metadata = new StorageMetadata.Builder()
+                        .setContentType("image/jpg")
+                        .build();
+
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -99,23 +104,44 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void selecionarCapa(View view){
-        Intent intent1 = new Intent();
-        intent1.setType("image/*");
-        intent1.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent1,"Selecionar foto"), 1);
+    Intent intent1 = new Intent();
+    intent1.setType("image/*");
+    intent1.setAction(Intent.ACTION_GET_CONTENT);
+    startActivityForResult(Intent.createChooser(intent1, "Selecionar capa"),3);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        System.out.println(resultCode);
+        System.out.println(requestCode);
 
-        if (resultCode == RESULT_OK && resultCode == -1){
+        if(requestCode == 3){
+            Toast.makeText(this, "Capa inicializada", Toast.LENGTH_SHORT).show();
+            Uri uri1 = data.getData();
+
+            imageCapa.setImageURI(uri1);
+
+            enviarImagem();
+
+            FirebaseUser usuarioLogado = FirebaseAuth.getInstance().getCurrentUser();
+
+            String user = usuarioLogado.getUid();
+
+
+            StorageMetadata metadata = new StorageMetadata.Builder()
+                    .setContentType("image/jpg")
+                    .build();
+
+            // Upload the file and metadata
+            UploadTask uploadTask = storageRef.child(user).child("images/capa.jpg").putFile(uri1, metadata);
+        }
+
+        if (requestCode == 1){
             Uri uri = data.getData();
 
             imageButton6.setImageURI(uri);
-            imageCapa.setImageURI(uri);
+
 
             enviarImagem();
 
@@ -130,7 +156,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 // Upload the file and metadata
             UploadTask uploadTask = storageRef.child(user).child("images/profile.jpg").putFile(uri, metadata);
-            UploadTask uploadTask2 = storageRef.child(user).child("images/capa.jpg").putFile(uri, metadata);
 
         }
 
