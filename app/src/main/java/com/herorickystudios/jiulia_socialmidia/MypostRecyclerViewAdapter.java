@@ -6,10 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,9 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.herorickystudios.jiulia_socialmidia.placeholder.PlaceholderContent.PlaceholderItem;
 import com.herorickystudios.jiulia_socialmidia.databinding.FragmentItemBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,11 +61,10 @@ public class MypostRecyclerViewAdapter extends RecyclerView.Adapter<MypostRecycl
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 snapshot.getValue();
-                String db = String.valueOf(snapshot.getKey());
-                String valor = String.valueOf((db));
+
 
                 //int post = Integer.parseInt(0 + numberposts);;
-                System.out.println(db);
+                //System.out.println(postes);
 
             }
 
@@ -108,11 +103,20 @@ public class MypostRecyclerViewAdapter extends RecyclerView.Adapter<MypostRecycl
 
                 String user = usuarioLogado.getUid();
 
-                //final String numberposts = snapshot.child(user).child("numerodeposts").getValue().toString();
+                String colunas = snapshot.child(user).child("Posts").getValue().toString().replace("[", "").replace("]", "")
+                        .replace(" ", "");
 
-                //System.out.println(numberposts);
+                String teste1 = "teste";
+                String teste2 = "teste";
+                String teste3 = "teste";
+                String teste4 = "teste";
 
-                //final String PostsProfile = snapshot.child(user).child("Posts").child(String.valueOf(position)).getValue().toString();
+                String[] arrayPosts = {colunas};
+                int tamanho = arrayPosts.length;
+
+
+
+                System.out.println("colunas: " + arrayPosts + "Com o tamanho de: " + tamanho);
 
             }
             @Override
